@@ -24,5 +24,10 @@ export { trackSessionLiquidity, detectAsianBreakout, detectJudasSwing } from "./
 export { getNewsFilter, shouldAvoidTrade } from "./engine/news.js";
 export { calculateKellyCriterion, compoundingPlan, drawdownRecovery, getMoneyManagementPlan } from "./engine/money.js";
 
+// Additional Engines
+export { detectHarmonicPattern, computePRZ, HARMONIC_RATIOS } from "./engine/harmonics.js";
+export { computeEMA, computeEMAStack, computeRSI, computeMACD, computeStochastic, computeBollingerBands, getIndicatorConfluence } from "./engine/indicators.js";
+export { getDXYBias, checkCorrelation, getMacroBias, CORRELATION_MAP } from "./engine/correlation.js";
+
 // Gate System
 export { runGates } from "./gates/entry-gates.js";
