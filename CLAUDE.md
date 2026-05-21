@@ -26,8 +26,10 @@ src/
     risk.js          — trade_risk_calc, trade_partial_tp, trade_daily_limit
     session.js       — trade_session_check, trade_next_killzone
     scanner.js       — trade_scanner (multi-pair scoring)
-    journal.js       — trade_journal_log, trade_journal_close, trade_journal_stats
+    journal.js       — trade_journal_log/close/stats/open (persistent file-based)
     levels.js        — trade_key_levels, trade_dol
+    alerts.js        — trade_alert_send, trade_alert_config
+    autoscan.js      — trade_auto_scan, trade_watchlist_status
 tests/
   engines.test.js    — Node test runner tests for all engines
 ```
@@ -40,7 +42,8 @@ tests/
 
 ## Rules
 
-- Engines must be pure functions — no network I/O, no filesystem access.
+- NEVER auto-execute trades. System alerts only — user decides.
+- Engines must be pure functions — no network I/O, no filesystem access (exception: alerts.js, persistent-journal.js).
 - Tools parse JSON string inputs, call engines, return JSON text content.
 - Never generate a BUY/SELL outside a Kill Zone.
 - Never trade during RANGING conditions (Kalman).

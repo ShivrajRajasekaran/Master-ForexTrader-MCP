@@ -3,10 +3,10 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tools](https://img.shields.io/badge/Tools-18-purple)]()
+[![Tools](https://img.shields.io/badge/Tools-22-purple)]()
 [![Engines](https://img.shields.io/badge/Engines-20-orange)]()
 
-Institutional-grade forex & gold trading analysis server for [Claude Code](https://claude.ai/code). Full SMC/ICT framework with 7-gate entry system + 10-point institutional checklist. 20 analysis engines, 18 MCP tools, Python backtesting.
+Institutional-grade forex & gold trading analysis server for [Claude Code](https://claude.ai/code). Full SMC/ICT framework with 7-gate entry system + 10-point institutional checklist. 20 analysis engines, 22 MCP tools, Python backtesting. Telegram alerts, persistent journal, auto-scan.
 
 ---
 
@@ -112,13 +112,23 @@ cd python && pip install -r requirements.txt
 | `trade_daily_limit` | Daily loss & trade count check |
 | `trade_money_management` | Kelly Criterion, compounding, drawdown recovery plan |
 
-### Journal
+### Journal (Persistent — survives restarts)
 
 | Tool | Purpose |
 |------|---------|
-| `trade_journal_log` | Record trade entry |
+| `trade_journal_log` | Record trade entry (saved to JSON file) |
 | `trade_journal_close` | Close with result (win/loss/BE) |
-| `trade_journal_stats` | Win rate, streak, total P&L |
+| `trade_journal_stats` | Win rate, streak, total P&L, edge analysis, session breakdown |
+| `trade_journal_open` | View all currently open trades |
+
+### Alerts & Automation
+
+| Tool | Purpose |
+|------|---------|
+| `trade_alert_send` | Send Telegram/webhook alert when setup forms (NEVER trades) |
+| `trade_alert_config` | Setup instructions for Telegram bot + Discord webhook |
+| `trade_auto_scan` | Auto-scan watchlist with 10-point checklist (YOU decide to trade) |
+| `trade_watchlist_status` | Quick check: Kill Zone? Limits? Ready to scan? |
 
 ---
 
@@ -201,6 +211,21 @@ Quick-fire validation (subset of the 10-point for fast signals):
 
 ---
 
+## Safety: NO Auto-Trading
+
+**This system will NEVER place a trade without your explicit permission.**
+
+Even if conditions are perfect (10/10 checklist, A+ grade, inside Kill Zone) — the system only **alerts** you. YOU decide whether to enter. This is by design:
+
+- Alerts notify, they don't execute
+- Auto-scan identifies setups, doesn't place orders
+- Journal records YOUR decisions, not automated ones
+- No API connection to your broker for order placement
+
+**You are the trader. The system is your analyst.**
+
+---
+
 ## Risk Rules
 
 | Rule | Value |
@@ -276,10 +301,12 @@ src/
     ├── risk.js            trade_risk_calc, trade_partial_tp, trade_daily_limit
     ├── session.js         trade_session_check, trade_next_killzone
     ├── scanner.js         trade_scanner
-    ├── journal.js         trade_journal_log/close/stats
+    ├── journal.js         trade_journal_log/close/stats/open (persistent)
     ├── levels.js          trade_key_levels, trade_dol
     ├── confirmation.js    trade_confirmation, trade_mtf_check, trade_fib_extensions, trade_money_management
-    └── checklist.js       trade_checklist_10
+    ├── checklist.js       trade_checklist_10
+    ├── alerts.js          trade_alert_send, trade_alert_config
+    └── autoscan.js        trade_auto_scan, trade_watchlist_status
 tests/
 └── engines.test.js        24 tests
 python/
