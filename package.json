@@ -1,0 +1,42 @@
+{
+  "name": "master-trader-mcp",
+  "version": "1.0.0",
+  "description": "Institutional-grade forex trading analysis plugin for Claude Code. Full SMC/ICT framework with Kill Zones, AMD, Liquidity Sweeps, CRT, CISD, Kalman Filter, OTE, and 7-gate entry system.",
+  "type": "module",
+  "main": "src/server.js",
+  "bin": {
+    "master-trader": "src/server.js"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "mcp",
+    "trading",
+    "forex",
+    "smc",
+    "ict",
+    "claude-code",
+    "tradingview",
+    "institutional-trading",
+    "smart-money",
+    "kill-zones",
+    "order-blocks",
+    "fair-value-gaps"
+  ],
+  "author": "Shivraj",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shivraj-prajapati/master-trader-mcp"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
