@@ -16,6 +16,7 @@ import { registerSessionTools } from "./tools/session.js";
 import { registerScannerTools } from "./tools/scanner.js";
 import { registerJournalTools } from "./tools/journal.js";
 import { registerLevelsTools } from "./tools/levels.js";
+import { registerConfirmationTools } from "./tools/confirmation.js";
 
 const server = new McpServer(
   {
@@ -58,6 +59,7 @@ registerSessionTools(server);
 registerScannerTools(server);
 registerJournalTools(server);
 registerLevelsTools(server);
+registerConfirmationTools(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

@@ -14,5 +14,15 @@ export { detectDisplacement, detectWyckoffSpring, detectWyckoffUTAD, detectBreak
 export { computePDH_PDL, computePWH_PWL, getAsiaRange, getLondonRange, getNYRange, detectEqualHighs, detectEqualLows, getAllKeyLevels } from "./engine/levels.js";
 export { getQuarterlyPhase, getMacroWindow, isSilverBulletWindow, getOptimalEntryTiming, QUARTERLY_THEORY, MACRO_WINDOWS, SILVER_BULLET, POWER_OF_3 } from "./engine/time.js";
 
+// New Engines
+export { detectEngulfing, detectPinBar, detectHammer, detectDoji, detectMorningStar, getConfirmationCandle } from "./engine/candles.js";
+export { classifyZoneStatus, filterFreshZones, trackMitigation } from "./engine/mitigation.js";
+export { detectRejectionBlock, detectPropulsionBlock, computeFibExtensions, detectLiquidityVoid } from "./engine/blocks.js";
+export { analyzeMTF, getMTFConfluence } from "./engine/mtf.js";
+export { detectPriceDivergence, detectMomentumDivergence } from "./engine/divergence.js";
+export { trackSessionLiquidity, detectAsianBreakout, detectJudasSwing } from "./engine/sessions.js";
+export { getNewsFilter, shouldAvoidTrade } from "./engine/news.js";
+export { calculateKellyCriterion, compoundingPlan, drawdownRecovery, getMoneyManagementPlan } from "./engine/money.js";
+
 // Gate System
 export { runGates } from "./gates/entry-gates.js";
