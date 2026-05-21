@@ -3,8 +3,8 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tools](https://img.shields.io/badge/Tools-22-purple)]()
-[![Engines](https://img.shields.io/badge/Engines-20-orange)]()
+[![Tools](https://img.shields.io/badge/Tools-24-purple)]()
+[![Engines](https://img.shields.io/badge/Engines-22-orange)]()
 
 **Master-ForexTrader-MCP** — Institutional-grade forex & gold trading analysis server for [Claude Code](https://claude.ai/code). Full SMC/ICT framework with 7-gate entry system + 10-point institutional checklist. 20 analysis engines, 22 MCP tools, Python backtesting. Telegram alerts, persistent journal, auto-scan.
 
@@ -130,6 +130,13 @@ cd python && pip install -r requirements.txt
 | `trade_auto_scan` | Auto-scan watchlist with 10-point checklist (YOU decide to trade) |
 | `trade_watchlist_status` | Quick check: Kill Zone? Limits? Ready to scan? |
 
+### Order Flow & VWAP
+
+| Tool | Purpose |
+|------|---------|
+| `trade_orderflow` | Delta, cumulative delta, imbalance, absorption, exhaustion — who's in control |
+| `trade_vwap` | Anchored VWAP (session/swing/sweep anchor) + bands + confluence |
+
 ---
 
 ## The 10-Point Institutional Checklist
@@ -195,6 +202,8 @@ Quick-fire validation (subset of the 10-point for fast signals):
 | `harmonics.js` | Gartley, Bat, Butterfly, Crab, Cypher + PRZ computation |
 | `indicators.js` | EMA stack, RSI, MACD, Bollinger, Stochastic, 8-point confluence |
 | `correlation.js` | DXY bias, pair correlation warnings, macro impact per symbol |
+| `vwap.js` | Anchored VWAP (session open, swing H/L, liquidity sweep), bands, confluence |
+| `orderflow.js` | Delta, cumulative delta, bid/ask imbalance, absorption, exhaustion |
 
 ---
 
@@ -341,7 +350,7 @@ python/
 
 **Patterns:** Wyckoff Spring/UTAD, AMD Cycle, Engulfing, Pin Bar, Hammer, Doji, Morning/Evening Star, Gartley, Bat, Butterfly, Crab, Cypher
 
-**Volume:** POC/VAH/VAL, Exhaustion, Displacement Validation, Price/Volume Divergence
+**Volume & Order Flow:** POC/VAH/VAL, Exhaustion, Displacement Validation, Price/Volume Divergence, Delta, Cumulative Delta, Bid/Ask Imbalance, Absorption, Anchored VWAP, VWAP Bands
 
 **Risk:** Kelly Criterion, Compounding, Drawdown Recovery, Partial TP, Streak Management, Correlation Warning
 

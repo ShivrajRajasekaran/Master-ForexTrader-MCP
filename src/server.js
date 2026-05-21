@@ -20,6 +20,7 @@ import { registerConfirmationTools } from "./tools/confirmation.js";
 import { registerChecklistTools } from "./tools/checklist.js";
 import { registerAlertTools } from "./tools/alerts.js";
 import { registerAutoScanTools } from "./tools/autoscan.js";
+import { registerOrderFlowTools } from "./tools/orderflow.js";
 
 const server = new McpServer(
   {
@@ -66,6 +67,7 @@ registerConfirmationTools(server);
 registerChecklistTools(server);
 registerAlertTools(server);
 registerAutoScanTools(server);
+registerOrderFlowTools(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

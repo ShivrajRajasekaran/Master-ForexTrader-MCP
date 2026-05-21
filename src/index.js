@@ -29,6 +29,10 @@ export { detectHarmonicPattern, computePRZ, HARMONIC_RATIOS } from "./engine/har
 export { computeEMA, computeEMAStack, computeRSI, computeMACD, computeStochastic, computeBollingerBands, getIndicatorConfluence } from "./engine/indicators.js";
 export { getDXYBias, checkCorrelation, getMacroBias, CORRELATION_MAP } from "./engine/correlation.js";
 
+// Anchored VWAP & Order Flow
+export { computeVWAP, anchorToSessionOpen, anchorToSwingHigh, anchorToSwingLow, anchorToLiquiditySweep, getVWAPAnalysis, vwapConfluence } from "./engine/vwap.js";
+export { estimateDelta, cumulativeDelta, detectDeltaDivergence, detectImbalance, detectAbsorption, detectExhaustionVolume, getOrderFlowAnalysis } from "./engine/orderflow.js";
+
 // Alerts & Journal
 export { formatAlertMessage, shouldAlert, sendTelegramAlert, sendWebhookAlert } from "./engine/alerts.js";
 export { logTrade, closeTrade, getJournalStats, getTodayTrades, getOpenTrades } from "./engine/persistent-journal.js";
