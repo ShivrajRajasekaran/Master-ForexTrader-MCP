@@ -1,11 +1,11 @@
 {
-  "name": "master-trader-mcp",
+  "name": "master-forextrader-mcp",
   "version": "1.0.0",
-  "description": "Institutional-grade forex trading analysis plugin for Claude Code. Full SMC/ICT framework with Kill Zones, AMD, Liquidity Sweeps, CRT, CISD, Kalman Filter, OTE, and 7-gate entry system.",
+  "description": "Master-ForexTrader-MCP — Institutional-grade forex trading analysis for Claude Code. Full SMC/ICT framework with Kill Zones, AMD, Liquidity Sweeps, CRT, CISD, Kalman Filter, OTE, and 7-gate entry system.",
   "type": "module",
   "main": "src/server.js",
   "bin": {
-    "master-trader": "src/server.js"
+    "master-forextrader": "src/server.js"
   },
   "scripts": {
     "start": "node src/server.js",

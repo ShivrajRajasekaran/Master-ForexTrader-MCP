@@ -1,5 +1,5 @@
 /**
- * Master Trader MCP — Library Exports
+ * Master-ForexTrader-MCP — Library Exports
  * Use these directly if integrating the engines into your own code.
  */
 

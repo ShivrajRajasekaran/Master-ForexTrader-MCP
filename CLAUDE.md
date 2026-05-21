@@ -1,4 +1,4 @@
-# Master Trader MCP
+# Master-ForexTrader-MCP
 
 Institutional-grade forex/gold trading analysis MCP server for Claude Code.
 

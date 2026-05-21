@@ -13,7 +13,7 @@ export function formatAlertMessage(checklist, symbol = "XAUUSD") {
   const emoji = direction === "LONG" ? "BUY" : "SELL";
 
   const message = [
-    `=== MASTER TRADER ALERT ===`,
+    `=== MASTER-FOREXTRADER ALERT ===`,
     ``,
     `${emoji} ${symbol} — ${direction}`,
     `Score: ${score} | Grade: ${grade} | Size: ${sizing}`,

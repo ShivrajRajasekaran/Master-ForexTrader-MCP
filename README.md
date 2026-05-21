@@ -1,4 +1,4 @@
-# Master Trader MCP
+# Master-ForexTrader-MCP
 
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io)
@@ -6,7 +6,7 @@
 [![Tools](https://img.shields.io/badge/Tools-22-purple)]()
 [![Engines](https://img.shields.io/badge/Engines-20-orange)]()
 
-Institutional-grade forex & gold trading analysis server for [Claude Code](https://claude.ai/code). Full SMC/ICT framework with 7-gate entry system + 10-point institutional checklist. 20 analysis engines, 22 MCP tools, Python backtesting. Telegram alerts, persistent journal, auto-scan.
+**Master-ForexTrader-MCP** — Institutional-grade forex & gold trading analysis server for [Claude Code](https://claude.ai/code). Full SMC/ICT framework with 7-gate entry system + 10-point institutional checklist. 20 analysis engines, 22 MCP tools, Python backtesting. Telegram alerts, persistent journal, auto-scan.
 
 ---
 
@@ -15,13 +15,13 @@ Institutional-grade forex & gold trading analysis server for [Claude Code](https
 ### Windows (PowerShell)
 
 ```powershell
-git clone https://github.com/ShivrajRajasekaran/Master-Trader-MCP.git && cd Master-Trader-MCP && npm install && claude mcp add master-trader -- node "%cd%\src\server.js"
+git clone https://github.com/ShivrajRajasekaran/Master-ForexTrader-MCP.git && cd Master-ForexTrader-MCP && npm install && claude mcp add master-forextrader -- node "%cd%\src\server.js"
 ```
 
 ### Mac / Linux
 
 ```bash
-git clone https://github.com/ShivrajRajasekaran/Master-Trader-MCP.git && cd Master-Trader-MCP && npm install && claude mcp add master-trader -- node "$(pwd)/src/server.js"
+git clone https://github.com/ShivrajRajasekaran/Master-ForexTrader-MCP.git && cd Master-ForexTrader-MCP && npm install && claude mcp add master-forextrader -- node "$(pwd)/src/server.js"
 ```
 
 ### Verify Installation
@@ -50,7 +50,7 @@ cd python && pip install -r requirements.txt
 │                       │                                      │
 │                       ▼                                      │
 │  ┌────────────────────────────────────────┐                  │
-│  │        MASTER TRADER MCP               │                  │
+│  │     MASTER-FOREXTRADER-MCP             │                  │
 │  │                                        │                  │
 │  │  10-POINT CHECKLIST:                   │                  │
 │  │  [PASS] 1. DXY Macro Bias             │                  │

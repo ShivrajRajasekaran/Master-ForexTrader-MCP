@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Master Trader MCP Server
+ * Master-ForexTrader-MCP Server
  * Institutional-grade forex trading analysis for Claude Code.
  *
- * Install: claude mcp add master-trader node /path/to/master-trader-plugin/src/server.js
+ * Install: claude mcp add master-forextrader node /path/to/Master-ForexTrader-MCP/src/server.js
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -23,12 +23,12 @@ import { registerAutoScanTools } from "./tools/autoscan.js";
 
 const server = new McpServer(
   {
-    name: "master-trader",
+    name: "master-forextrader",
     version: "1.0.0",
-    description: "Institutional forex trading analysis — SMC/ICT framework with 7-gate entry system",
+    description: "Master-ForexTrader-MCP — Institutional forex trading analysis with SMC/ICT framework, 7-gate entry system, 10-point checklist",
   },
   {
-    instructions: `Master Trader MCP — Professional institutional trading analysis.
+    instructions: `Master-ForexTrader-MCP — Professional institutional trading analysis.
 
 TOOL SELECTION GUIDE:
 
