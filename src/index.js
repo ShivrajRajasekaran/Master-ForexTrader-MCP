@@ -41,6 +41,9 @@ export { analyzeTrendFollowing } from "./engine/trend-following.js";
 export { analyzeRangeTrading } from "./engine/range-trading.js";
 export { analyzeBreakout } from "./engine/breakout-trading.js";
 
+// Elliott Wave
+export { analyzeElliottWave } from "./engine/elliott-wave.js";
+
 // Alerts & Journal
 export { formatAlertMessage, shouldAlert, sendTelegramAlert, sendWebhookAlert } from "./engine/alerts.js";
 export { logTrade, closeTrade, getJournalStats, getTodayTrades, getOpenTrades } from "./engine/persistent-journal.js";
