@@ -387,6 +387,14 @@ python/
 
 ---
 
+## Support
+
+If this project helps your trading, consider supporting development:
+
+<a href="https://buymeachai.ezee.li/ShivrajR369" target="_blank" rel="noopener noreferrer"><img src="https://buymeachai.ezee.li/assets/images/buymeachai-button.png" alt="Buy Me A Chai" width="200"></a>
+
+---
+
 ## License
 
 MIT
