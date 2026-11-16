@@ -6,18 +6,20 @@
 
 import { nyDecimalHour } from "./tz.js";
 
+// Tradeable windows, New York local time. Matches the owner's CLAUDE.md:
+// London KZ 02:00–05:00 NY (12:30–15:30 IST in winter) and
+// NY KZ 07:00–10:00 NY (17:30–20:30 IST in winter). Outside these: no new trades.
 const KILL_ZONES = {
   london: { start: 2, end: 5, label: "London KZ", type: "manipulation" },
-  ny_am: { start: 9.5, end: 11, label: "NY AM KZ", type: "distribution" },
-  silver_bullet: { start: 10, end: 11, label: "Silver Bullet", type: "sniper" },
-  ny_pm_kz: { start: 13.5, end: 15, label: "NY PM KZ", type: "continuation" },
+  ny_am: { start: 7, end: 10, label: "NY KZ", type: "distribution" },
 };
 
+// Every hour outside the two kill zones is a no-trade zone.
 const AVOID_ZONES = {
   asian: { start: 20, end: 0, label: "Asian Session", reason: "Mark range only — no entries" },
   pre_london: { start: 0, end: 2, label: "Pre-London", reason: "No liquidity — only accumulation" },
-  london_ny_gap: { start: 5, end: 9.5, label: "London-NY Gap", reason: "Transition — wait for NY" },
-  ny_lunch: { start: 11, end: 13.5, label: "NY Lunch", reason: "Low volume chop — avoid" },
+  london_ny_gap: { start: 5, end: 7, label: "London-NY Gap", reason: "Transition — wait for NY KZ" },
+  after_ny_kz: { start: 10, end: 15, label: "After NY KZ", reason: "Outside your kill zones — no new trades" },
   ny_close: { start: 15, end: 20, label: "NY Close", reason: "Reversion — not trending" },
 };
 

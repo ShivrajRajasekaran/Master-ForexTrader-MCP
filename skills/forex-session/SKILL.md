@@ -13,19 +13,18 @@ Check current Kill Zone, session info, and countdown to next tradeable window.
 3. If outside Kill Zone, run `trade_next_killzone`:
    - Show countdown to next window
    - Which session it is
-   - What to expect (London = sweeps, NY AM = real move, Silver Bullet = sniper FVG)
+   - What to expect (London = sweeps of the Asian range, NY = real move of the day)
 
-## Kill Zone Schedule
+## Kill Zone Schedule (matches CLAUDE.md — only these two windows are tradeable)
 
-| Session | EST | IST | Role |
-|---------|-----|-----|------|
+| Session | New York time | IST (winter) | Role |
+|---------|---------------|--------------|------|
 | London KZ | 2:00-5:00 AM | 12:30-3:30 PM | Manipulation (sweeps Asia) |
-| NY AM KZ | 9:30-11:00 AM | 8:00-9:30 PM | Distribution (real move) |
-| Silver Bullet | 10:00-11:00 AM | 8:30-9:30 PM | Single FVG sniper |
-| NY PM KZ | 1:30-3:00 PM | 12:00-1:30 AM | Continuation |
+| NY KZ | 7:00-10:00 AM | 5:30-8:30 PM | Distribution (real move) |
+
+IST times shift 1 hour earlier while the US/UK are on summer time; the server computes this itself.
 
 ## Rules
 - Asian session = mark range only, don't trade
-- NY Lunch (11-1:30 PM) = avoid
-- After 3 PM = no new positions
-- Friday after 3 PM = flat, no new trades
+- Outside the two kill zones = no new trades (this includes the old Silver Bullet 10-11 AM and NY PM 1:30-3 PM windows)
+- Friday after 3 PM New York = flat, no new trades

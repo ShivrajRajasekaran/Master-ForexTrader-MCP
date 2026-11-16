@@ -69,8 +69,8 @@ describe("Kill Zones", () => {
     assert.strictEqual(session.canTrade, false);
   });
 
-  test("NY AM KZ at 10AM EST", () => {
-    const nyTime = new Date("2026-01-15T15:00:00Z"); // 10AM EST
+  test("NY KZ at 8AM EST", () => {
+    const nyTime = new Date("2026-01-15T13:00:00Z"); // 8AM EST
     const session = getCurrentSession(nyTime.getTime());
     assert.ok(session.canTrade);
     assert.strictEqual(session.activeKillZone.key, "ny_am");

@@ -46,11 +46,11 @@ describe("tz helpers", () => {
 });
 
 describe("Kill zones across DST", () => {
-  test("summer 9:45 EDT is NY AM KZ (fixed -5 said 8:45, gap)", () => {
-    const s = getCurrentSession(ts("2026-07-15T13:45:00Z"));
+  test("summer 7:30 EDT is NY KZ (fixed -5 said 6:30, gap)", () => {
+    const s = getCurrentSession(ts("2026-07-15T11:30:00Z"));
     assert.strictEqual(s.activeKillZone?.key, "ny_am");
     assert.strictEqual(s.canTrade, true);
-    assert.strictEqual(s.estHour, "9.75");
+    assert.strictEqual(s.estHour, "7.50");
   });
 
   test("summer 2:30 EDT is London KZ (fixed -5 said 1:30, pre-London)", () => {
@@ -77,7 +77,7 @@ describe("Kill zones across DST", () => {
   });
 
   test("passing -5 explicitly reproduces the old behaviour", () => {
-    const s = getCurrentSession(ts("2026-07-15T13:45:00Z"), -5);
+    const s = getCurrentSession(ts("2026-07-15T11:30:00Z"), -5);
     assert.strictEqual(s.activeKillZone, null);
   });
 });
@@ -91,11 +91,38 @@ describe("Next kill zone", () => {
     assert.strictEqual(r.currentEST, "23.41");
   });
 
-  test("summer: from 8:00 EDT, NY AM is next in 1h 30m", () => {
-    const r = getNextKillZone(ts("2026-07-15T12:00:00Z"));
+  test("summer: from 6:00 EDT, NY KZ is next in 1h 00m", () => {
+    const r = getNextKillZone(ts("2026-07-15T10:00:00Z"));
     assert.strictEqual(r.nextKillZone.key, "ny_am");
-    assert.strictEqual(r.nextKillZone.countdown, "1h 30m");
+    assert.strictEqual(r.nextKillZone.countdown, "1h 00m");
   });
+
+  test("only the two CLAUDE.md kill zones are listed", () => {
+    const r = getNextKillZone(ts("2026-11-16T04:24:39Z"));
+    assert.deepStrictEqual(r.allUpcoming.map((k) => k.key).sort(), ["london", "ny_am"]);
+  });
+});
+
+describe("CLAUDE.md windows in IST (winter)", () => {
+  const cases = [
+    ["12:30 IST London KZ opens", "2026-11-16T07:00:00Z", true, "london"],
+    ["15:29 IST still London KZ", "2026-11-16T09:59:00Z", true, "london"],
+    ["15:30 IST London KZ closed", "2026-11-16T10:00:00Z", false, null],
+    ["17:29 IST before NY KZ", "2026-11-16T11:59:00Z", false, null],
+    ["17:30 IST NY KZ opens", "2026-11-16T12:00:00Z", true, "ny_am"],
+    ["18:25 IST inside NY KZ", "2026-11-16T12:55:00Z", true, "ny_am"],
+    ["20:29 IST still NY KZ", "2026-11-16T14:59:00Z", true, "ny_am"],
+    ["20:30 IST NY KZ closed", "2026-11-16T15:00:00Z", false, null],
+    ["21:00 IST old Silver Bullet hour: no trade", "2026-11-16T15:30:00Z", false, null],
+    ["00:30 IST old NY PM KZ: no trade", "2026-11-17T19:00:00Z", false, null],
+  ];
+  for (const [name, iso, canTrade, key] of cases) {
+    test(name, () => {
+      const s = getCurrentSession(ts(iso));
+      assert.strictEqual(s.canTrade, canTrade);
+      assert.strictEqual(s.activeKillZone?.key ?? null, key);
+    });
+  }
 });
 
 describe("Time windows across DST", () => {
