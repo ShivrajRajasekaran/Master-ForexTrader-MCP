@@ -4,6 +4,8 @@
  * This engine provides event awareness and trade filtering.
  */
 
+import { nyParts } from "./tz.js";
+
 const HIGH_IMPACT_EVENTS = [
   { name: "NFP", day: "first_friday", time: "08:30", tz: "EST", impact: "extreme", pairs: ["XAUUSD", "USD_ALL"] },
   { name: "FOMC Rate Decision", day: "scheduled", time: "14:00", tz: "EST", impact: "extreme", pairs: ["USD_ALL", "XAUUSD"] },
@@ -75,12 +77,14 @@ export function shouldAvoidTrade(symbol, timestampMs = Date.now()) {
    * Quick check: should we avoid trading right now due to news?
    * Returns true if within avoidance window of any high-impact event.
    */
-  const d = new Date(timestampMs);
-  const dayName = d.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
+  // Day and hour in New York local time (EST/EDT via Intl), not the machine's
+  // local zone and not a fixed -5 offset.
+  const ny = nyParts(timestampMs);
+  const dayName = ny.weekday;
 
   // Friday rule: avoid holding over weekend
   if (dayName === "friday") {
-    const estHour = ((d.getUTCHours() - 5 + 24) % 24);
+    const estHour = ny.hour;
     if (estHour >= 15) {
       return {
         avoid: true,
@@ -90,10 +94,8 @@ export function shouldAvoidTrade(symbol, timestampMs = Date.now()) {
   }
 
   // NFP Friday (first Friday of month)
-  if (dayName === "friday" && d.getDate() <= 7) {
-    const estHour = ((d.getUTCHours() - 5 + 24) % 24);
-    const estMin = d.getUTCMinutes();
-    const estDecimal = estHour + estMin / 60;
+  if (dayName === "friday" && ny.day <= 7) {
+    const estDecimal = ny.hour + ny.minute / 60;
     if (estDecimal >= 7.5 && estDecimal <= 9.5 && (symbol.includes("USD") || symbol === "XAUUSD")) {
       return {
         avoid: true,
@@ -104,7 +106,7 @@ export function shouldAvoidTrade(symbol, timestampMs = Date.now()) {
 
   // Monday rule: first 2 hours are unreliable
   if (dayName === "monday") {
-    const estHour = ((d.getUTCHours() - 5 + 24) % 24);
+    const estHour = ny.hour;
     if (estHour < 2) {
       return {
         avoid: true,

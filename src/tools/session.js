@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { getCurrentSession, KILL_ZONES, SESSION_PIVOTS } from "../engine/kill-zones.js";
+import { getCurrentSession, getNextKillZone, KILL_ZONES, SESSION_PIVOTS } from "../engine/kill-zones.js";
 import { getQuarterlyPhase, getMacroWindow, isSilverBulletWindow, getOptimalEntryTiming } from "../engine/time.js";
+import { sessionClock } from "../engine/tz.js";
 
 export function registerSessionTools(server) {
   server.tool(
@@ -16,10 +17,7 @@ export function registerSessionTools(server) {
       const now = Date.now();
       const session = getCurrentSession(now);
 
-      const d = new Date(now);
-      const utc = d.toISOString();
-      const estHour = ((d.getUTCHours() - 5 + 24) % 24);
-      const istHour = d.getUTCHours() + 5.5;
+      const clock = sessionClock(now);
 
       const timing = getOptimalEntryTiming(now);
       const macro = getMacroWindow(now);
@@ -27,16 +25,16 @@ export function registerSessionTools(server) {
       const result = {
         ...session,
         time: {
-          utc,
-          est: `${Math.floor(estHour)}:${String(Math.round((estHour % 1) * 60)).padStart(2, "0")} EST`,
-          ist: timezone_offset_ist
-            ? `${Math.floor(istHour % 24)}:${String(Math.round((istHour % 1) * 60)).padStart(2, "0")} IST`
-            : undefined,
+          utc: clock.utc,
+          est: clock.est,
+          newYorkZone: clock.newYorkZone,
+          london: clock.london,
+          ist: timezone_offset_ist ? clock.ist : undefined,
         },
         killZones: KILL_ZONES,
         timing: {
           quarterly: timing.quarterly.quarter,
-          macro: macro.inMacro ? macro.activeMacro.note : macro.nextMacro ? `Next: ${macro.nextMacro.start} EST` : "None",
+          macro: macro.inMacro ? macro.activeMacro.note : macro.nextMacro ? `Next: ${macro.nextMacro.start} ${clock.newYorkZone}` : "None",
           silverBullet: timing.silverBullet.inWindow,
           score: `${timing.score}/3`,
           recommendation: timing.recommendation,
@@ -55,26 +53,10 @@ export function registerSessionTools(server) {
     "Get the next upcoming Kill Zone time from current moment.",
     {},
     async () => {
-      const now = new Date();
-      const estHour = ((now.getUTCHours() - 5 + 24) % 24) + now.getUTCMinutes() / 60;
-
-      const upcoming = [];
-      for (const [key, kz] of Object.entries(KILL_ZONES)) {
-        let hoursUntil = kz.start - estHour;
-        if (hoursUntil < 0) hoursUntil += 24;
-        upcoming.push({ ...kz, key, hoursUntil: hoursUntil.toFixed(1) });
-      }
-
-      upcoming.sort((a, b) => parseFloat(a.hoursUntil) - parseFloat(b.hoursUntil));
-
       return {
         content: [{
           type: "text",
-          text: JSON.stringify({
-            currentEST: estHour.toFixed(2),
-            nextKillZone: upcoming[0],
-            allUpcoming: upcoming,
-          }, null, 2),
+          text: JSON.stringify(getNextKillZone(Date.now()), null, 2),
         }],
       };
     }

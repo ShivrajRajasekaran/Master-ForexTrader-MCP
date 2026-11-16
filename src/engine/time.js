@@ -2,7 +2,13 @@
  * Time Engine
  * Quarterly Theory, Macro Time Windows, Silver Bullet, Power of 3.
  * Master traders know WHEN price moves — time > price.
+ *
+ * All windows are New York local time. Every function takes an optional
+ * `timezoneOffset` (fixed UTC offset in hours); omit it to use real New York
+ * time from Intl, which switches EST/EDT automatically.
  */
+
+import { nyDecimalHour } from "./tz.js";
 
 export const QUARTERLY_THEORY = {
   q1: { start: 0, end: 15, phase: "Accumulation", note: "First 15 min of hour — range builds" },
@@ -41,7 +47,9 @@ export const POWER_OF_3 = {
   },
 };
 
-export function getQuarterlyPhase(timestampMs = Date.now(), timezoneOffset = -5) {
+export function getQuarterlyPhase(timestampMs = Date.now(), timezoneOffset) {
+  // Quarters depend only on the minute of the hour, which is the same in UTC and
+  // New York (whole-hour offsets), so no zone conversion is needed here.
   const d = new Date(timestampMs);
   const utcMin = d.getUTCMinutes();
 
@@ -60,12 +68,10 @@ export function getQuarterlyPhase(timestampMs = Date.now(), timezoneOffset = -5)
   };
 }
 
-export function getMacroWindow(timestampMs = Date.now(), timezoneOffset = -5) {
-  const d = new Date(timestampMs);
-  const utcHour = d.getUTCHours();
-  const utcMin = d.getUTCMinutes();
-  const estHour = ((utcHour + timezoneOffset + 24) % 24);
-  const estMin = utcMin;
+export function getMacroWindow(timestampMs = Date.now(), timezoneOffset) {
+  const nyHour = nyDecimalHour(timestampMs, timezoneOffset);
+  const estHour = Math.floor(nyHour);
+  const estMin = Math.floor((nyHour - estHour) * 60 + 1e-9);
   const estTimeStr = `${String(estHour).padStart(2, "0")}:${String(estMin).padStart(2, "0")}`;
 
   let activeMacro = null;
@@ -94,10 +100,8 @@ export function getMacroWindow(timestampMs = Date.now(), timezoneOffset = -5) {
   };
 }
 
-export function isSilverBulletWindow(timestampMs = Date.now(), timezoneOffset = -5) {
-  const d = new Date(timestampMs);
-  const utcHour = d.getUTCHours();
-  const estHour = ((utcHour + timezoneOffset + 24) % 24);
+export function isSilverBulletWindow(timestampMs = Date.now(), timezoneOffset) {
+  const estHour = nyDecimalHour(timestampMs, timezoneOffset);
 
   const inWindow = estHour >= SILVER_BULLET.window.start && estHour < SILVER_BULLET.window.end;
 
@@ -110,7 +114,7 @@ export function isSilverBulletWindow(timestampMs = Date.now(), timezoneOffset = 
   };
 }
 
-export function getOptimalEntryTiming(timestampMs = Date.now(), timezoneOffset = -5) {
+export function getOptimalEntryTiming(timestampMs = Date.now(), timezoneOffset) {
   const quarterly = getQuarterlyPhase(timestampMs, timezoneOffset);
   const macro = getMacroWindow(timestampMs, timezoneOffset);
   const silverBullet = isSilverBulletWindow(timestampMs, timezoneOffset);

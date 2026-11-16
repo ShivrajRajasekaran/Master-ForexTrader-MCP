@@ -4,6 +4,8 @@
  * Based on ICT Kill Zone framework used by 15+ year master traders.
  */
 
+import { nyDecimalHour } from "./tz.js";
+
 const KILL_ZONES = {
   london: { start: 2, end: 5, label: "London KZ", type: "manipulation" },
   ny_am: { start: 9.5, end: 11, label: "NY AM KZ", type: "distribution" },
@@ -26,10 +28,15 @@ const SESSION_PIVOTS = {
   close: { startUTC: 20, endUTC: 24, role: "Mean reversion into NY range" },
 };
 
-export function getCurrentSession(timestampMs = Date.now(), timezoneOffset = -5) {
+/**
+ * Session status at a timestamp. Kill-zone hours are New York local time.
+ * timezoneOffset: optional fixed UTC offset in hours. Omit it (default) to use the
+ * real New York time from Intl, which switches EST/EDT automatically.
+ */
+export function getCurrentSession(timestampMs = Date.now(), timezoneOffset) {
   const d = new Date(timestampMs);
   const utcHour = d.getUTCHours() + d.getUTCMinutes() / 60;
-  const estHour = ((utcHour + timezoneOffset + 24) % 24);
+  const estHour = nyDecimalHour(timestampMs, timezoneOffset);
 
   let activeKZ = null;
   let inAvoidZone = null;
@@ -76,6 +83,35 @@ export function getCurrentSession(timestampMs = Date.now(), timezoneOffset = -5)
       : inAvoidZone
         ? `AVOID: ${inAvoidZone.label} — ${inAvoidZone.reason}`
         : "Off-session — WAIT",
+  };
+}
+
+/**
+ * Kill zones sorted by time until their next start, from New York local time.
+ * timezoneOffset: optional fixed UTC offset in hours (default: real NY time via Intl).
+ */
+export function getNextKillZone(timestampMs = Date.now(), timezoneOffset) {
+  const estHour = nyDecimalHour(timestampMs, timezoneOffset);
+
+  const upcoming = [];
+  for (const [key, kz] of Object.entries(KILL_ZONES)) {
+    let hoursUntil = kz.start - estHour;
+    if (hoursUntil < 0) hoursUntil += 24;
+    const totalMin = Math.round(hoursUntil * 60);
+    upcoming.push({
+      ...kz,
+      key,
+      hoursUntil: hoursUntil.toFixed(1),
+      countdown: `${Math.floor(totalMin / 60)}h ${String(totalMin % 60).padStart(2, "0")}m`,
+    });
+  }
+
+  upcoming.sort((a, b) => parseFloat(a.hoursUntil) - parseFloat(b.hoursUntil));
+
+  return {
+    currentEST: estHour.toFixed(2),
+    nextKillZone: upcoming[0],
+    allUpcoming: upcoming,
   };
 }
 
